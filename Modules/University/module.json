@@ -1,0 +1,22 @@
+{
+    "name": "University",
+    "alias": "university",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\University\\Providers\\UniversityServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": [],
+    "sub_menus": [
+        {
+            "icon": "fa fa-eye",
+            "name": "Shows",
+            "route": "university/index",
+            "permission": "view_university"
+        }
+    ],
+    "permissions": ["view_university"]
+}
