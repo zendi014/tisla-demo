@@ -19,7 +19,7 @@ class FileUploader extends Controller
         try {
 
             $assesment_extension = ['xlsx', 'xlsm', 'xls'];
-            dd($request->file->extension());
+            dd($request);
             if( in_array($request->file->extension(), $assesment_extension) ){
                 $validator = Validator::make($request->all(), [
                     'file' => 'required|mimes:.xlsm|max:5120'
