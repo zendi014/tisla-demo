@@ -1,5 +1,5 @@
-<div class="row justify-content-center mt-8" style="margin-bottom:-60px;display:none">
-    <div class="col-xl-10 col-lg-8">
+<div class="row justify-content-center mt-8" style="margin-bottom:-60px;">
+    <div class="col-xl-10 col-lg-8" style="display:none">
         <div class="text-center">
             <h5>Assesment data will appeared after uploading, rendering, and synchonizing</h5>
             <p class="text-muted">
