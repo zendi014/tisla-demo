@@ -115,6 +115,20 @@ Route::get(
     ]
 )->name('test.test_helper');
 
+Route::get(
+    'test_mail', 
+    [
+        Test::class, 'TestMail'
+    ]
+)->name('test.mail');
+
+// Route::get(
+//     'test_mail_page', 
+//     [
+//         Test::class, 'TestMail'
+//     ]
+// )->name('test.mail_page');
+
 // Route::get(
 //     'session_auth', 
 //     [
@@ -140,6 +154,10 @@ Route::group(['
     Route::group([
         'prefix'     => 'c11',
     ], function() {
+
+
+        // Direction to the dashboard
+
         Route::get(
             'admin', 
             [
@@ -155,6 +173,18 @@ Route::group(['
             ]
         )->name('c11_dashboard_client');
 
+
+        Route::get(
+            'prodi', 
+            [
+                HomeController::class, 'c11_dashboard_prodi'
+            ]
+        )->name('c11_dashboard_prodi');
+
+
+
+
+        
         /*
         Route::get(
             'detail_rendered_assesment_file/{file_id}', 

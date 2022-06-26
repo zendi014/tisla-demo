@@ -4,7 +4,6 @@
 
             <div class="col-sm order-3 order-sm-1">
                 <div class="d-flex align-items-start mt-3 mt-sm-0">
-
                     <div class="flex-grow-1">
                         <div>
                             <h4 class="font-size-16 mb-1">
@@ -23,7 +22,7 @@
 
                             <div class="row">
 
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <h5 class="font-size-16 mb-1">
                                         DEPARTMENT
                                     </h5>
@@ -32,21 +31,30 @@
                                     </p>
                                 </div>
 
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <h5 class="font-size-16 mb-1">
-                                        LEVEL / SKS
+                                        LEVEL / CREDITs
                                     </h5>
                                     <p class="text-muted font-size-13">
                                         {{ $assesment_identity[0]->level_marks; }}
                                     </p>
                                 </div>
 
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <h5 class="font-size-16 mb-1">
                                         SEMESTER
                                     </h5>
                                     <p class="text-muted font-size-13">
                                         {{ $assesment_identity[0]->semester; }}
+                                    </p>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <h5 class="font-size-16 mb-1">
+                                        PERIOD
+                                    </h5>
+                                    <p class="text-muted font-size-13">
+                                        {{ $assesment_identity[0]->tahun_ajaran; }}
                                     </p>
                                 </div>
                             </div>

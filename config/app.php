@@ -26,7 +26,7 @@ return [
     |
     */
 
-    'env' => env('APP_ENV', 'production'),
+    'env' => env('APP_ENV', 'local'),
 
     /*
     |--------------------------------------------------------------------------
@@ -184,6 +184,9 @@ return [
 
         // PhpJunior\LaravelHtmlEncrypt\LaravelHtmlEncryptServiceProvider::class,
 
+
+        Nwidart\Modules\LaravelModulesServiceProvider::class,
+
     ],
 
     /*
@@ -238,7 +241,9 @@ return [
 
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
         'SoftDeletes' => Illuminate\Database\Eloquent\SoftDeletes::class,
-        'UuidTrait' =>App\Models\Concerns\UuidTrait::class
+        'UuidTrait' =>App\Models\Concerns\UuidTrait::class,
+
+        'Module' => Nwidart\Modules\Facades\Module::class,
 
         // 'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ],

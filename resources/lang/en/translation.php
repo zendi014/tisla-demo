@@ -190,6 +190,18 @@ return [
     'permission_lists' => 'Permission Lists',
     
     'user_name_label' => 'User Name',
-    'RecapAssesment' => 'Recap Assesment'
+    'RecapAssesment' => 'Recap Assesment',
+    'Sync' => 'Synchronization',
+
+    'RecapAssesment' => 'Recap Assesment',
+    'RecapAssesmentLectures' => 'Rec. Asst. Lectures',
+    'RecapAssesmentLecturers' => 'Rec. Asst. Lecturers',
+    'RecapAssesmentCollegers' => 'Rec. Asst. Collegers',  
+    
+    'SyncColleger' => 'Sync. Colleger',
+    'SyncLecturer' => 'Sync. Lecturer',
+    'SyncFaculty' => 'Sync. Faculty',
+    'SyncDepartment' => 'Sync. Department',
+    'SyncCurriculum' => 'Sync. Curriculum',
 ];
 ?>

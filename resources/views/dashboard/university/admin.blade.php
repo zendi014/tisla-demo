@@ -20,6 +20,6 @@
         @endslot
     @endcomponent
 
-    HAHAHAHA
+    ADMIN DASHBOARD
 
 @endsection

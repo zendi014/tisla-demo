@@ -6,10 +6,11 @@
 <script src="{{ URL::asset('assets/libs/node-waves/waves.min.js')}}"></script>
 <script src="{{ URL::asset('assets/libs/feather-icons/feather.min.js')}}"></script>
 <script src="{{ URL::asset('assets/js/pages/axios.min.js')}}"></script>
+<script src="{{ URL::asset('assets/js/pages/jquery.serializejson.js')}}"></script>
 <script src="{{ URL::asset('assets/js/pages/highcharts.js')}}"></script>
 <script src="{{ URL::asset('assets/js/pages/highcharts-more.js')}}"></script>
 <script src="{{ URL::asset('assets/js/pages/highcharts-data-module.js')}}"></script>
-
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 
 
 <!-- pace js -->
@@ -17,7 +18,7 @@
 
 <!-- sweetalert -->
 <!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> -->
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="{{ URL::asset('assets/libs/swal2/dist/sweetalert2.min.js')}}"></script>
 
 <script>
     $('#change-password').on('submit',function(event){

@@ -18,7 +18,7 @@ class CreateC11MDepartmentsTable extends Migration
 
             $table->string('name');
             $table->string('flag');
-            $table->uuid('created_by');
+            $table->uuid('created_by')->nullable();
 
             $table->timestamps();
             $table->softDeletes();

@@ -68,7 +68,42 @@ spider_chart_ = (json_data, container) => {
 line_bar_chart_ = (json_data, container) => {
     this.options = {
         chart: {
-            zoomType: 'xy'
+            zoomType: 'xy',
+            events: {
+                load: function() {
+                    Highcharts.each(this.series[0].points, function(p) {
+                        if (p.y > 80 && p.y <= 100) {
+                            p.update({
+                                color: "#0a5c9a" // A OK 
+                            });
+                        }else if (p.y > 74 && p.y <= 80) {
+                            p.update({
+                                color: "#4ba6ef" // B+ OK
+                            });
+                        }else if (p.y > 68 && p.y <= 74) {
+                            p.update({
+                                color: "#7ebef1" // B 
+                            });
+                        }else if (p.y > 62 && p.y <= 68) {
+                            p.update({ 
+                                color: "#ffbf53" // C+ OK
+                            });
+                        }else if (p.y > 56 && p.y <= 62) {
+                            p.update({
+                                color: "#f1734f" // C OK
+                            });
+                        }else if (p.y > 45 && p.y <= 56) {
+                            p.update({
+                                color: "#f0302b" // D
+                            });
+                        }else{
+                            p.update({
+                                color: "#74788d" // E OK
+                            });
+                        }
+                    });
+                }
+            }
         },
         title: {
             text: json_data['title']
@@ -76,7 +111,7 @@ line_bar_chart_ = (json_data, container) => {
         subtitle: {
             text: json_data['subtitle']
         },
-        colors: ["#0a5c9a", "#fd625e", "#ffbf53", "#2ab57d", "#74788d", "#383d8a", "#777aca", "#34c38f", "#ffefd4"],
+        // colors: ["#0a5c9a", "#fd625e", "#ffbf53", "#2ab57d", "#74788d", "#383d8a", "#777aca", "#34c38f", "#ffefd4"],
         xAxis: [{
             categories: json_data['categories'],            
             crosshair: true

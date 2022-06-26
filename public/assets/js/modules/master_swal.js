@@ -1,4 +1,4 @@
-swal_html = (html) => {
+this.swal_html = (html) => {
     Swal.fire({
         html: html,
         showCloseButton: true,
@@ -7,11 +7,13 @@ swal_html = (html) => {
         focusConfirm: false,
         scrollbarPadding:false,
         widthAuto: true,
+        allowOutsideClick: false,
         width: '75%',
     });
 }
 
-swal_html_mini = (html) => {
+
+this.swal_html_middle_50 = (html) => {
     Swal.fire({
         html: html,
         showCloseButton: true,
@@ -20,22 +22,53 @@ swal_html_mini = (html) => {
         focusConfirm: false,
         scrollbarPadding:false,
         widthAuto: true,
+        allowOutsideClick: false,
+        width: '50%',
     });
 }
 
-swal_loading = (msg) => {
+this.swal_html_middle_40 = (html) => {
+    Swal.fire({
+        html: html,
+        showCloseButton: true,
+        showCancelButton: false,
+        showConfirmButton: false,
+        focusConfirm: false,
+        // scrollbarPadding:false,
+        // widthAuto: true,
+        allowOutsideClick: false,
+        width: '40%',
+    });
+}
+
+this.swal_html_mini = (html) => {
+    Swal.fire({
+        html: html,
+        showCloseButton: true,
+        showCancelButton: false,
+        showConfirmButton: false,
+        focusConfirm: false,
+        scrollbarPadding:false,
+        allowOutsideClick: false,
+        widthAuto: true,
+    });
+}
+
+
+
+this.swal_loading = (msg) => {
 
     let imgurl = window.location.origin + "/assets/images/svg/blue/svg817.svg";
 
     let spinner = `           
-        <div>
+        <div style="text-align:center">
             <img 
                 src="${imgurl}" 
                 alt="" style="height:auto; max-width: 50%;"
             >
         </div>     
 
-        <div>
+        <div style="text-align:center">
             <div class="spinner-grow text-primary m-1" role="status">
                 <span class="sr-only">Loading...</span>
             </div>
@@ -68,7 +101,8 @@ swal_loading = (msg) => {
 }
 
 
-swal_done = (msg) => {
+
+this.swal_done = (msg) => {
     const Toast = Swal.mixin({
         toast: true,
         position: 'top-end',
@@ -88,7 +122,8 @@ swal_done = (msg) => {
 }
 
 
-swal_error = (msg) => {
+
+this.swal_error = (msg) => {
     const Toast = Swal.mixin({
         toast: true,
         position: 'top-end',
@@ -105,4 +140,31 @@ swal_error = (msg) => {
         icon: 'error',
         title: msg
     })
+}
+
+
+this.swal_confirm = (msg, pos_btn, neg_btn) => {
+    return new Promise((resolve, reject) => {
+        Swal.fire({
+            title: msg,
+            html: '<div style="text-align: center;" class="row"><i class="dripicons-warning" style="font-size:44px;"></i><p>This Action cant be undone!!</p></div>',
+            showDenyButton: true,
+            showCancelButton: false,
+            showCloseButton: true,
+            allowOutsideClick: false,
+            confirmButtonText: pos_btn,
+            denyButtonText: neg_btn,
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                // Swal.fire(pos_btn, '', 'success')
+                resolve(true);
+            } else if (result.isDenied) {
+                // Swal.fire(neg_btn, '', 'info')
+                resolve(false);
+            }
+            
+        })
+    });
+    
 }

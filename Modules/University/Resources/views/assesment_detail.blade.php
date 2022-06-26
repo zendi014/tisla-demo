@@ -50,24 +50,31 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
+                            <div class="col-12 col-lg-12">
+                                <div id="chart_caompetencies" class="mt-3"></div>
+                            </div>
+
                             <div class="col-12 col-lg-6">
                                 <div id="chart_total_cpl_marks" class="mt-3"></div>
                             </div>
                             <div class="col-12 col-lg-6">
                                 <div id="chart_total_cpmk_marks" class="mt-3"></div>
                             </div>
+
                             <div class="col-12 col-lg-6">
                                 <div id="chart_cpl_by_cw" class="mt-3"></div>                                                
                             </div>
                             <div class="col-12 col-lg-6">
                                 <div id="chart_cpmk_by_cw" class="mt-3"></div>                                                
                             </div>
+
                             <div class="col-12 col-lg-12">
                                 <div id="chart_grades" class="mt-3"></div>                                                
                             </div>
                             <div class="col-12 col-lg-12">
                                 <div id="chart_grades_by_cpl" class="mt-3"></div>                                                
                             </div>
+
                             <div class="col-12 col-lg-12">
                                 <div id="chart_grades_by_cpmk" class="mt-3"></div>                                                
                             </div>

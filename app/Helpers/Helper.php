@@ -293,6 +293,7 @@ class Helper{
 
     public static function GetProvinceCity(){
         return DB::table("m_city_province")->select(["province", "city_name"])
+                                  ->orderBy("province", "ASC")
                                   ->orderBy("city_name", "ASC")
                                   ->groupBy(["province", "city_name"])
                                   ->get();

@@ -42,7 +42,6 @@ class Permission extends SpatiePermission
             'download_assesment',
             'upload_assesment',
 
-
             'view_recap_assesment',
             'add_recap_assesment',
             'edit_recap_assesment',
@@ -50,12 +49,22 @@ class Permission extends SpatiePermission
             'download_recap_assesment',
             'upload_recap_assesment',
 
-
             'view_curriculum',
             'add_curriculum',
             'edit_curriculum',
             'delete_curriculum', 
             'download_curriculum',
+
+            'view_assesment_statistic',
+            'add_assesment_statistic',
+            'edit_assesment_statistic',
+
+            'view_sync',
+            'view_sync',
+            'edit_sync',
+            'delete_sync', 
+            'download_sync',
+            'upload_sync',
         ];
     }
 }

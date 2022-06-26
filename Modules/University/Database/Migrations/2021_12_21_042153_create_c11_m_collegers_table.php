@@ -19,6 +19,11 @@ class CreateC11MCollegersTable extends Migration
             $table->string('name'); 
             $table->string('nim');
             $table->string('flag');
+            $table->string('status')->nullable();
+            $table->string('campus_loc')->nullable();
+            $table->string('class_pos')->nullable();
+            $table->string('batch')->nullable();
+
             $table->uuid('created_by');
 
             $table->timestamps();

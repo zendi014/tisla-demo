@@ -28,7 +28,9 @@
     </div><!-- end row-->
 
     <div class="row mt-3" id="dashboard_file_upload_content">
-        @include('modules.file_uploader')
+        @can('upload_assesment')
+            @include('modules.file_uploader')
+        @endcan
     </div><!-- end row-->
 
 

@@ -14,7 +14,7 @@
             <li class="nav-item">
                 <a class="nav-link" data-bs-toggle="tab" href="#tab_2" role="tab" aria-selected="true">
                     <span class="d-block d-sm-none"><i class="far fa-user"></i></span>
-                    <span class="d-none d-sm-block">Student Marks by CMPKs </span>
+                    <span class="d-none d-sm-block">Student Marks by Courseworks and CMPKs </span>
                 </a>
             </li>
             <!-- <li class="nav-item">
@@ -61,10 +61,31 @@
                             @foreach($student_marks as $k => $val)
                             <tr>
                                 <td class="text-center">
-                                    {{ $val->nim }}
+                                    <a href="/c11/recap_assesment/detail_by_colleger/{{$val->m_colleger_id}}" target="__blank">
+                                        {{ $val->nim }}
+                                    </a>
                                 </td>
                                 <td class="text-left">
-                                    {{ $val->student_name }}
+                                    <a href="/c11/recap_assesment/detail_by_colleger/{{$val->m_colleger_id}}" target="__blank">
+                                        {{ $val->student_name }}
+                                    </a>
+                                    @if($k < 3)
+                                        <span class="badge bg-soft-success text-success">
+                                            T
+                                        </span>
+                                    @elseif($k >= count($student_marks) - 3)
+                                        <span class="badge bg-soft-danger text-danger">
+                                            B
+                                        </span>
+                                    @else
+                                        @if(isset($student_marks))
+                                            @if( $val->total_final_marks > (($student_marks_stddevavg['student_mark_grades_stddevavg'][0]->avg_final_marks) - 0.01*$student_marks_stddevavg['student_mark_grades_stddevavg'][0]->avg_final_marks) && $val->total_final_marks < ($student_marks_stddevavg['student_mark_grades_stddevavg'][0]->avg_final_marks + 0.01*$student_marks_stddevavg['student_mark_grades_stddevavg'][0]->avg_final_marks))
+                                                <span class="badge bg-soft-warning text-warning">
+                                                    M
+                                                </span>
+                                            @endif
+                                        @endif
+                                    @endif
                                 </td>
                                 <td style="text-align: right;">                                                
                                     {{ number_format((float)$val->avg_course_work_marks, 2, '.', '') }}
@@ -87,9 +108,63 @@
                             </tr>
                             @endforeach
 
+                            @if(isset($student_marks))
+                            <tr style="font-weight: bold;">
+                                <td class="text-center">
+                                </td>
+                                <td class="text-center">
+                                    AVERAGE
+                                </td>
+
+                                <td style="text-align: right;">
+                                    {{ round($student_marks_stddevavg['student_mark_course_work_stddevavg'][0]->avg_course_work_marks, 2) }}
+                                </td>
+                                <td style="text-align: right;">
+                                    {{ round($student_marks_stddevavg['student_mark_course_work_stddevavg'][0]->avg_final_course_work_marks, 2) }}
+                                </td>
+
+                                <td style="text-align: right;">
+                                    {{ round($student_marks_stddevavg['student_mark_final_exam_stddevavg'][0]->avg_exam_marks, 2) }}
+                                </td>
+                                <td style="text-align: right;">
+                                    {{ round($student_marks_stddevavg['student_mark_final_exam_stddevavg'][0]->avg_final_exam_marks, 2) }}
+                                </td>
+
+                                <td style="text-align: right;">
+                                    {{ round($student_marks_stddevavg['student_mark_grades_stddevavg'][0]->avg_final_marks, 2) }}
+                                </td>
+                            </tr> 
+                            <tr style="font-weight: bold;">
+                                <td class="text-center">
+                                </td>
+                                <td class="text-center">
+                                    STDDEV
+                                </td>
+
+                                <td style="text-align: right;">
+                                    {{ round($student_marks_stddevavg['student_mark_course_work_stddevavg'][0]->stdev_avg_course_work_marks, 2) }}
+                                </td>
+                                <td style="text-align: right;">
+                                    {{ round($student_marks_stddevavg['student_mark_course_work_stddevavg'][0]->stdev_final_course_work_marks, 2) }}
+                                </td>
+
+                                <td style="text-align: right;">
+                                    {{ round($student_marks_stddevavg['student_mark_final_exam_stddevavg'][0]->stdev_avg_exam_marks, 2) }}
+                                </td>
+                                <td style="text-align: right;">
+                                    {{ round($student_marks_stddevavg['student_mark_final_exam_stddevavg'][0]->stdev_final_exam_marks, 2) }}
+                                </td>
+
+                                <td style="text-align: right;">
+                                    {{ round($student_marks_stddevavg['student_mark_grades_stddevavg'][0]->stdev_final_marks, 2) }}
+                                </td>
+                            </tr> 
+                            @endif
+
                         </tbody>
                     </table>
                 </div>
+                
             @endif
             </div>
             <!-- end tab pane -->
@@ -127,7 +202,7 @@
                                         @foreach($vv as $kkk => $vvv)                           
                                             @if(!empty($vvv))
                                                 @if($kkk != 'student_name')
-                                                    <td class="text-center">{{ $vvv }}</td>
+                                                    <td style="text-align: right;">{{ $vvv }}</td>
                                                 @else
                                                     <td>{{ $vvv }}</td>
                                                 @endif
@@ -135,6 +210,42 @@
                                         @endforeach
                                     </tr>
                                 @endforeach
+
+                                @if(isset($val['pivot_data_stddevavg']))
+                                    <tr style="font-weight: bold;">
+                                        <td class="text-center">
+                                        </td>
+                                        <td class="text-center">
+                                            AVERAGE
+                                        </td>
+                                        @foreach($val['pivot_data_stddevavg'] as $kk => $vv)
+                                            @foreach($vv as $kkk => $vvv)                           
+                                                @if(in_array($kkk, array('avg_cpmk1', 'avg_cpmk2', 'avg_cpmk3', 'avg_cpmk4', 'avg_cpmk5', 'avg_cpmk6', 'avg_cpmk7', 'avg_cpmk8')))
+                                                    @if(!empty($vvv))
+                                                        <td style="text-align: right;">{{ round($vvv, 2) }}</td>
+                                                    @endif
+                                                @endif
+                                            @endforeach
+                                        @endforeach
+                                    </tr>
+
+                                    <tr style="font-weight: bold;">
+                                        <td class="text-center">
+                                        </td>
+                                        <td class="text-center">
+                                            STDDEV
+                                        </td>
+                                        @foreach($val['pivot_data_stddevavg'] as $kk => $vv)
+                                            @foreach($vv as $kkk => $vvv)                           
+                                                @if(in_array($kkk, array('stdev_cpmk1', 'stdev_cpmk2', 'stdev_cpmk3', 'stdev_cpmk4', 'stdev_cpmk5', 'stdev_cpmk6', 'stdev_cpmk7', 'stdev_cpmk8')))
+                                                    @if(!empty($vvv))
+                                                        <td style="text-align: right;">{{ round($vvv, 2) }}</td>
+                                                    @endif
+                                                @endif
+                                            @endforeach
+                                        @endforeach
+                                    </tr>
+                                @endif
 
                             </tbody>
                         </table>

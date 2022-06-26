@@ -20,7 +20,7 @@ class CreateC11MFacultiesTable extends Migration
             $table->string('name');
             $table->string('flag');
             $table->uuid('created_by')
-                  ->index("idx_c11_m_faculties_created_by");
+                  ->index("idx_c11_m_faculties_created_by")->nullable();
 
             $table->timestamps();
             $table->softDeletes();

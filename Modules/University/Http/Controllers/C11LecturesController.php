@@ -47,7 +47,8 @@ class C11LecturesController extends Controller
                     "flag" => $flag,
                     "code" => $data["code"],
                     "level_marks" => $data["level_marks"],
-                    "semester" => Helper::text_remove_space($data["semester"]),
+                    "semester_mk" => $data["semester_mk"],
+                    "tahun_ajaran" => Helper::text_remove_space($data["tahun_ajaran"]),
                     "name" => strtoupper($name),
                     "created_by" => $user_inst_id
                 ]

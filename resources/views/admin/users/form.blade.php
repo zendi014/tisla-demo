@@ -69,6 +69,41 @@
                                 </div>
                             @enderror
                         </div>
+
+                        <!--  Faculty ID -->
+                        <div class="form-group mb-3">                                            
+                            <label class="form-label">Faculty</label>                                            
+                            <select class="form-select" name="faculty_id" >
+                                <option>Select</option>
+                                @foreach($faculty as $val)
+                                    @if(isset($user->c_user_institutions['faculty_id']))                                     
+                                        <option value="{{ $val->id }}" @if(old('faculty_id', $user->c_user_institutions['faculty_id']) === $val->id) selected @endif>{{ $val->name }}</option>
+                                    @else
+                                        <option value="{{ $val->id }}">{{ $val->name }}</option>
+                                    @endif
+                                @endforeach
+                                
+                            </select>
+                        </div>
+
+
+                        <!--  Department ID -->
+                        <div class="form-group mb-3">                                            
+                            <label class="form-label">Department</label>                                            
+                            <select class="form-select" name="department_id" >
+                                <option>Select</option>
+                                @foreach($department as $val)
+                                    @if(isset($user->c_user_institutions['faculty_id']))                                     
+                                        <option value="{{ $val->id }}" @if(old('department_id', $user->c_user_institutions['department_id']) === $val->id) selected @endif>{{ $val->name }}</option>
+                                    @else
+                                        <option value="{{ $val->id }}">{{ $val->name }}</option>
+                                    @endif
+                                @endforeach
+                                
+                            </select>
+                        </div>
+
+
                         <div class="form-group">
                             <label>@lang('translation.role_label')</label>
                             <select class="form-select" name="role_id">
@@ -110,3 +145,19 @@
     </div>
     </form>
 </section>
+
+
+
+@section('script')
+    <!-- <script>
+        const getval = (sel, cfg) => {
+            console.log(sel.value);
+            $("#institution_level").children().hide();
+            if(cfg == 'institution_category'){
+                $("#institution_level").children("option[dt-cat-id="+sel.value+"]").show();
+            }
+        }
+        // $('option:selected', this).attr('mytag');
+        
+    </script> -->
+@endsection

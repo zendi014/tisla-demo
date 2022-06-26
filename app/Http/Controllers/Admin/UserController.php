@@ -13,6 +13,9 @@ use App\Repositories\Admin\Interfaces\RoleRepositoryInterface;
 use App\Repositories\Admin\Interfaces\PermissionRepositoryInterface;
 use App\Repositories\Admin\Interfaces\UserRepositoryInterface;
 
+use Modules\University\Entities\C11MFaculty;
+use Modules\University\Entities\C11MDepartment;
+
 use App\Authorizable;
 
 
@@ -75,6 +78,9 @@ class UserController extends Controller
     {
         $this->data['permissions'] = $this->permissionRepository->findAll();
         $this->data['roles'] = $this->roleRepository->findAll()->pluck('name', 'id');
+        
+        $this->data['faculty'] = C11MFaculty::all();
+        $this->data['department'] = C11MDepartment::all();
         $this->data['roleId'] = null;
 
         return view('admin.users.form', $this->data);
@@ -89,6 +95,7 @@ class UserController extends Controller
     public function store(UserRequest $request)
     {
         $params = $request->validated();
+        // dd($params);
 
         $user = $this->userRepository->create($params);
         if ($user) {
@@ -127,11 +134,12 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = $this->userRepository->findById($id);
-
         $this->data['user'] = $user;
         $this->data['permissions'] = $this->permissionRepository->findAll();
         $this->data['roles'] = $this->roleRepository->findAll()->pluck('name', 'id');
         $this->data['roleId'] = $user->roles->first() ? $user->roles->first()->id : null;
+        $this->data['faculty'] = C11MFaculty::all();
+        $this->data['department'] = C11MDepartment::all();
 
         return view('admin.users.form', $this->data);
     }

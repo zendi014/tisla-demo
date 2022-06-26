@@ -48,7 +48,7 @@ class HomeController extends Controller
             $inst_route = MAuthRouteController::findById($inst_data->institution_category, $inst_data->institution_level);
 
             $r = "/admin";
-
+            
             if(Auth::user()->roles_()->get()[0]['role_name'] == "Admin"){
                 session([
                     "user_data" => array(
@@ -61,23 +61,26 @@ class HomeController extends Controller
                     )
                 ]);       
             }else{
-                // Session::set(
-                //     'user_data',
-                //     array(
-                //         "user_inst_id" => $user_inst_id->id,
-                //         "route_preffix" => $inst_route->id
-                //     )
-                // );
                 session([
                     "user_data" => array(
                         "user_inst_id" => $user_inst_id->id,
+                        "user_faculty_id" => $user_inst_id->faculty_id,
+                        "user_department_id" => $user_inst_id->department_id,
                         "route_preffix" => $inst_route->id
                     )
                 ]);
-                $r = "/client";
+
+                if(Auth::user()->roles_()->get()[0]['role_name'] == "Prodi"){
+                    $r = "/prodi";
+                }else{
+                    $r = "/client";
+                }
             }
 
-            return redirect('c'.$inst_route->inst_category . $inst_route->inst_level . $r)
+            $url = 'c'.$inst_route->inst_category . $inst_route->inst_level . $r;
+            // dd($url);
+
+            return redirect($url)
                    ->withSuccess('You have Successfully logged in'); //redirect
             
         }
@@ -100,14 +103,28 @@ class HomeController extends Controller
     }
 
     
-
+    // Direction to the dashboard
     public function c11_dashboard_admin(){
         $this->data['currentAdminMenu'] = 'Dashboard';
+
         if(Auth::user()->roles_()->get()[0]['role_name'] == "Admin"){
             return view('dashboard.university.admin');
+        }elseif(Auth::user()->roles_()->get()[0]['role_name'] == "Prodi" ){ // || Auth::user()->roles_()->get()[0]['role_name'] == "KBI"
+            return redirect(c11_dashboard_prodi());
         }else{
-            return redirect('c11/client');
+            return redirect(c11_dashboard_client());
         }
+    }
+
+
+    public function c11_dashboard_prodi(){
+        $currentAdminMenu =  'Dashboard';
+        return view(
+            'dashboard.university.prodi', 
+            compact(
+                'currentAdminMenu'
+            )
+        );
     }
 
 

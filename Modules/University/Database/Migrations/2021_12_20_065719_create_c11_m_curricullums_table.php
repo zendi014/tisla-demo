@@ -21,7 +21,7 @@ class CreateC11MCurricullumsTable extends Migration
             $table->string('flag');            
             $table->integer('year'); 
             $table->uuid('created_by');
-            $table->uuid('institution_id');
+            $table->uuid('institution_id')->nullable();
 
             $table->timestamps();
             $table->softDeletes();

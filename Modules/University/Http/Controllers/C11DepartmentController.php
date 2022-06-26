@@ -57,6 +57,28 @@ class C11DepartmentController extends Controller
     }
 
 
+    public static function _store_($data)
+    {
+        try{
+            $name = $data["name"];
+            $flag = Helper::text_preg_flag($name);
+
+            $mdepartment = C11MDepartment::firstOrCreate(
+                [
+                    "flag" => $flag
+                ],
+                [
+                    "flag" => $flag,
+                    "name" => strtoupper($name)
+                ]
+            );
+        }catch (Throwable $e) {
+            report($e);
+            return false;
+        }
+    }
+
+
     public static function set_department_curriculum($data){
         try{
             $user_inst_id = $data["user_inst_id"];

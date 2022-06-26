@@ -16,7 +16,8 @@ class C11MLecture extends Model
         "name",
         "code",
         "level_marks",
-        "semester",
+        "semester_mk",
+        "tahun_ajaran",
         "flag",
         "created_by"
     ];

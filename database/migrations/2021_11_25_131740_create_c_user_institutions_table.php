@@ -18,6 +18,8 @@ class CreateCUserInstitutionsTable extends Migration
 
             $table->uuid('institution_id')->nullable();
             $table->uuid('user_id');
+            $table->uuid('faculty_id')->nullable();
+            $table->uuid('department_id')->nullable();
             $table->uuid('assigned_by')->nullable();
             
             $table->timestamps();

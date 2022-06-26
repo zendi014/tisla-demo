@@ -11,3 +11,13 @@
 
 <!-- dropzone css -->
 <link href="{{ URL::asset('/assets/libs/dropzone/min/dropzone.min.css') }}" rel="stylesheet" type="text/css" />
+
+<link href="{{ URL::asset('/assets/libs/swal2/dist/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
+
+<!-- dataTables -->
+<link href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+<link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+
+ 

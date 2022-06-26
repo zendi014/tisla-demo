@@ -69,7 +69,8 @@ class C11AssesmentFileController extends Controller
                                               ->where('created_by',  $user_inst_id)
                                               ->orderBy('created_at', 'desc')
                                               ->limit(9)
-                                              ->get();
+                                              ->get();        
+
         $i = 0;
         $assesment_files = array();
 
@@ -81,11 +82,13 @@ class C11AssesmentFileController extends Controller
             $assesment_files[$i]["created_at"] = $C11AssesmentFile[$i]["created_at"]; 
             if($value->is_rendered == 1){
                     $assesment_files[$i]['assesment_detail'] =  DB::select("SELECT * FROM assesment_by_file_id ('$user_inst_id', '$value->file_id');");
+                    // $assesment_files[$i]['assesment_stddeavg'] = DB::select("SELECT * FROM assesment_by_file_id_stddevavg ('$user_inst_id', '$value->file_id');");
             }else{
                     $assesment_files[$i]['assesment_detail'] = null;
             }
             $i++;
         }
+        // dd($assesment_files);
         
         return $assesment_files;
     }
@@ -129,6 +132,7 @@ class C11AssesmentFileController extends Controller
     public function dashboard_last_assesment(){
         try{
             $latest_assesment_file = self::assesment_by_file_id();
+            // dd($latest_assesment_file);
 
             return view(
                 'university::latest_assesment_file', 
@@ -250,17 +254,19 @@ class C11AssesmentFileController extends Controller
             $data["c_lecture_class_id"] = $lecture_class->id;
 
             $student_marks = self::get_student_marks($data);
+            $student_marks_stddevavg = self::get_student_marks_stddevavg($data);
             $pivot_student_mark_by_cpmk = self::pivot_student_mark_by_cpmk($data);
-            $pivot_student_mark_by_cpl = self::pivot_student_mark_by_cpl($data);
-
-            // pivot_student_mark_by_cpmk pivot_student_mark_by_cpl
+            // $pivot_student_mark_by_cpl = self::pivot_student_mark_by_cpl($data);
+            
+            // dd($student_marks_stddevavg);
             
             return view(
                 'university::student_marks_content', 
                 compact(
                     'student_marks',
+                    'student_marks_stddevavg',
                     'pivot_student_mark_by_cpmk',
-                    'pivot_student_mark_by_cpl'
+                    // 'pivot_student_mark_by_cpl'
                 )
             );
         }
@@ -478,7 +484,7 @@ class C11AssesmentFileController extends Controller
     public function get_stat_cqi_cmpk(Request $request)
     {
         try {
-            dd($request);
+            // dd($request);
             $lecture_class = C11CLectureClass::where("assement_file_id", $request->file_id)->first();            
         } catch (Throwable $e) {
             report($e);
@@ -529,6 +535,23 @@ class C11AssesmentFileController extends Controller
                 $c_lecture_class_id = $lecture_class->id;
             }
             return DB::select("SELECT * FROM stat_cqi_cpmk_by_course_work ('$c_lecture_class_id');");
+        } catch (Throwable $e) {
+            report($e);
+            return false;
+        }
+    }
+
+
+    public static function stat_cqi_competency_by_course_work($data){
+        try {
+            if(isset($data["c_lecture_class_id"])){
+                $c_lecture_class_id = $data["c_lecture_class_id"];
+            }else{
+                $file_id = $data;
+                $lecture_class = C11CLectureClass::where("assement_file_id", $file_id)->first();
+                $c_lecture_class_id = $lecture_class->id;
+            }
+            return DB::select("SELECT * FROM student_mark_by_competency ('$c_lecture_class_id');");
         } catch (Throwable $e) {
             report($e);
             return false;
@@ -641,6 +664,29 @@ class C11AssesmentFileController extends Controller
                     $result[$i]["cw_name"] = $value->cw_name;
                     $result[$i]["cw_description"] = $value->cw_description;
                     $result[$i]["pivot_data"] = DB::select("SELECT * FROM pivot_student_mark_by_cpmk('$c_lecture_class_id', '$value->cw_id');");  
+                    $result[$i]["pivot_data_stddevavg"] = DB::select("
+                                    SELECT 
+                                        AVG(psmbc.cpmk1) as avg_cpmk1,
+                                        STDDEV(psmbc.cpmk1) as stdev_cpmk1,
+                                        AVG(psmbc.cpmk2) as avg_cpmk2,
+                                        STDDEV(psmbc.cpmk2) as stdev_cpmk2,
+                                        AVG(psmbc.cpmk3) as avg_cpmk3,
+                                        STDDEV(psmbc.cpmk3) as stdev_cpmk3,
+                                        AVG(psmbc.cpmk4) as avg_cpmk4,
+                                        STDDEV(psmbc.cpmk4) as stdev_cpmk4,
+                                        AVG(psmbc.cpmk5) as avg_cpmk5,
+                                        STDDEV(psmbc.cpmk5) as stdev_cpmk5,
+                                        AVG(psmbc.cpmk6) as avg_cpmk6,
+                                        STDDEV(psmbc.cpmk6) as stdev_cpmk6,
+                                        AVG(psmbc.cpmk7) as avg_cpmk7,
+                                        STDDEV(psmbc.cpmk7) as stdev_cpmk7,
+                                        AVG(psmbc.cpmk8) as avg_cpmk8,
+                                        STDDEV(psmbc.cpmk8) as stdev_cpmk8
+                                    FROM
+                                    (
+                                        SELECT * FROM pivot_student_mark_by_cpmk('$c_lecture_class_id', '$value->cw_id')
+                                    ) as psmbc;
+                    ");  
                     $i++;
                 }
                 return $result;
@@ -746,9 +792,11 @@ class C11AssesmentFileController extends Controller
         try {
             $c_lecture_class_id = $data["c_lecture_class_id"];
 
-            $student_course_work_mark = DB::select("SELECT * FROM student_mark_course_work ('$c_lecture_class_id');");
+            $student_course_work_mark = DB::select("SELECT * FROM student_mark_course_work ('$c_lecture_class_id');");            
+
             $student_mark_final_exam = DB::select("SELECT * FROM student_mark_final_exam ('$c_lecture_class_id');");
-            $student_mark_grades = DB::select("SELECT * FROM student_mark_grades ('$c_lecture_class_id');");
+
+            $student_mark_grades = DB::select("SELECT * FROM student_mark_grades ('$c_lecture_class_id') ORDER BY final_marks DESC;");
 
             $result = array();
             $i = 0;
@@ -763,6 +811,21 @@ class C11AssesmentFileController extends Controller
                 $i++;
             }
             // dd($result);
+            return $result;            
+        } catch (Throwable $e) {
+            report($e);
+            return false;
+        }
+    }
+
+    private static function get_student_marks_stddevavg($data){
+        try {
+            $c_lecture_class_id = $data["c_lecture_class_id"];
+
+            $result['student_mark_course_work_stddevavg']= DB::select("SELECT * FROM student_mark_course_work_stddevavg ('$c_lecture_class_id');");
+            $result['student_mark_final_exam_stddevavg']= DB::select("SELECT * FROM student_mark_final_exam_stddevavg ('$c_lecture_class_id');");
+            $result['student_mark_grades_stddevavg']= DB::select("SELECT * FROM student_mark_grades_stddevavg ('$c_lecture_class_id');");
+
             return $result;            
         } catch (Throwable $e) {
             report($e);

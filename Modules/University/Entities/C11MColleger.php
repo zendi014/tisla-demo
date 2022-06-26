@@ -12,7 +12,7 @@ class C11MColleger extends Model
 {
     use HasFactory, UuidTrait, SoftDeletes;
 
-    protected $fillable = ["name", "nim", "flag", "created_by"];
+    protected $fillable = ["name", "nim", "flag", "status", "campus_loc", "class_pos", "batch", "created_by"];
 
     protected $primaryKey = 'id';
     protected $dates = ['deleted_at'];

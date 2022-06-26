@@ -32,7 +32,7 @@
                                         @csrf
                                         <div class="mb-3">
                                             <label for="username" class="form-label">Email</label>
-                                            <input name="email" type="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email', 'user@tisla.com') }}" id="username" placeholder="Enter Email" autocomplete="email" autofocus>
+                                            <input name="email" type="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email', 'admin@tisla.com') }}" id="username" placeholder="Enter Email" autocomplete="email" autofocus>
                                             @error('email')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -79,7 +79,7 @@
                                         </div>
                                     </form>
                                     
-                                    <div class="mt-5 text-center">
+                                    <div class="mt-5 text-center" style="display:none">
                                         <p class="text-muted mb-0">Loggin Issue? <a href="{{ url('register') }}" class="text-primary fw-semibold"> Click Here </a> </p>
                                     </div> 
                                     

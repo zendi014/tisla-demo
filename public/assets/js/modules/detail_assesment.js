@@ -179,7 +179,7 @@
             title: 'CPL Statistics',
             subtitle: 'tisla.co.id'
         }
-        
+        console.log(options);
         line_bar_chart_(options, 'chart_total_cpl_marks');
     }
 
@@ -267,7 +267,7 @@
 
 
     charts_ = (file_id) => {      
-        
+        chart_competencies(file_id);
         cqi_cpls_stats(file_id);
         cqi_cpmks_stats(file_id);
 
@@ -277,8 +277,77 @@
         chart_grades(file_id);
         chart_grades_by_cpl(file_id);
         chart_grades_by_cpmk(file_id);
+
+        
     }
 
+
+    chart_competencies = async (file_id) => {
+        try {
+            await axios.get(
+                `../stat_cqi_competency_by_course_work/${file_id}`
+            ).then((response)=> {
+                if(response.status == 200){
+                    var names = [];  
+                    var series_data = []; 
+                    var _data = [];   
+                    var categories = [];
+                    var type = 'line';
+
+                    var j = 0;
+                    names.push("Competencies");
+                    _data.push([]);
+
+                    series_data.push({
+                        type: type,
+                        name: "Competencies",
+                        data: [],
+                        pointPlacement: 'on'
+                    });
+
+                    response.data.forEach(el => {
+
+                        if(categories.indexOf(el.competency) == -1){
+                            categories.push(el.competency);                           
+                            j++;
+                        }                        
+                    });
+
+                    for(i=0; i < names.length; i++){
+                        for(j=0; j < categories.length; j++){
+                            series_data[i]['data'][j] = 0;
+                        }
+                    }
+                    
+                    response.data.forEach(el => {
+                        marks = parseFloat(el.rate_marks)
+                        series_data[ names.indexOf("Competencies")]['data'][categories.indexOf(el.competency)] = parseFloat(marks.toFixed(2));
+                    });
+                    
+                    conf = {
+                        categories : categories,
+                        title : 'Competencies',
+                        conten_id: 'chart_caompetencies'
+                    }
+                
+                    json_data = {
+                        series: series_data,
+                        categories: conf['categories'],
+                        title: conf['title']
+                    }
+
+                    // console.log(json_data);
+
+                    spider_chart_(json_data, conf['conten_id']);
+
+                }
+            }).catch( (error)=> {
+                swal_error(error);
+            });
+        } catch (error) {
+            swal_error(error);
+        }
+    }
 
 
     chart_cpl_by_cw = async (file_id) => {
@@ -318,7 +387,7 @@
                             j++;
                         }                        
                     });
-                    
+
                     for(i=0; i < names.length; i++){
                         for(j=0; j < categories.length; j++){
                             series_data[i]['data'][j] = 0;
@@ -404,15 +473,17 @@
                     
                     conf = {
                         categories : categories,
-                        title : 'CPL Marks by Course Works',
+                        title : 'CPMK Marks by Course Works',
                         conten_id: 'chart_cpmk_by_cw'
                     }
-                
+                    
                     json_data = {
                         series: series_data,
                         categories: conf['categories'],
                         title: conf['title']
                     }
+                    // console.log(json_data);
+
                     spider_chart_(json_data, conf['conten_id']);
                 }
             }).catch( (error)=> {

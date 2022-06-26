@@ -1,5 +1,5 @@
 <div class="row justify-content-center mt-8" style="margin-bottom:-60px;">
-    <div class="col-xl-10 col-lg-8" style="display:none">
+    <div class="col-xl-10 col-lg-8">
         <div class="text-center">
             <h5>Assesment data will appeared after uploading, rendering, and synchonizing</h5>
             <p class="text-muted">
@@ -58,7 +58,7 @@
     <!-- end col -->
 
 
-    <div class="col-xl-10 col-lg-8">
+    <div class="col-xl-10 col-lg-8" style="display:none">
         <div class="card bg-danger border-danger text-white-50">
             <div class="card-body">
                 <h5 class="mb-4 text-white">

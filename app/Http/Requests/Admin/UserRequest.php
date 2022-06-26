@@ -48,6 +48,8 @@ class UserRequest extends FormRequest
                 'string'
             ],
             'role_id' => ['string'],
+            'faculty_id' => ['string'],
+            'department_id' => ['string']
         ];
     }
 }

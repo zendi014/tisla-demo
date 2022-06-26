@@ -16,7 +16,7 @@
                     @foreach($latest_assesment_file as $val)
 
                         @if($val['is_rendered'] == 1)                                                
-
+                            
                             <div class="col-xl-4 col-sm-6">
                                 <div class="card">
                                     <div class="card-body overflow-hidden position-relative">
@@ -48,10 +48,10 @@
                                             </p>
 
                                             <h4 class="card-title mt-3 mb-0">
-                                                Semester
+                                                Period (Semester)
                                             </h4>
                                             <p class="card-title-desc">
-                                                {{ $val['assesment_detail'][0]->semester }}
+                                            {{ $val['assesment_detail'][0]->tahun_ajaran }} ({{ $val['assesment_detail'][0]->semester }})
                                             </p>
                                         </p>                                      
                                         
@@ -62,7 +62,12 @@
                                                 class="btn btn-soft-dark waves-effect waves-light float-end"
                                                 href="{{ url('c11/detail_rendered_assesment_file/'.$val['assement_file_id']) }}" target="__blank">
                                             <i class="bx bx-detail font-size-16 align-middle me-2"></i> Details
-                                        </a>                                
+                                        </a>
+                                        <!-- <a type="button" assement_file_id = "{{ $val['assement_file_id'] }}"  
+                                                class="btn btn-soft-success waves-effect waves-light"
+                                                href="{{ Storage::url('/files/uploads/'.$val['file_name']) }}">
+                                            <i class="bx bxs-file-doc font-size-16 align-middle me-2"></i> Download File
+                                        </a>                             -->
 
                                     </div>
                                     <!-- end card body -->

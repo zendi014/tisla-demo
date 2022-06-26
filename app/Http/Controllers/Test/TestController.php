@@ -10,6 +10,10 @@ use App\Authorizable;
 use App\Http\Controllers\Test\ReadXLSMController;
 use Session;
 
+use Mail; 
+use App\Mail\MailTemplate;
+
+
 use App\Models\Modules\AInstitution;
 
 class TestController extends Controller
@@ -59,9 +63,43 @@ class TestController extends Controller
             report($e);
     
             return false;
-        }
+        }        
     }
 
+
+
+    public function TestMail(){
+        try{
+            $details  = [
+                'email' => 'zendi014@gmail.com',
+                'title' => "Mail Title",
+                'body' => "Mail Body",
+                'subject' => "Tisla Subject",
+                'footer' => "Mail Footer"
+            ];
+
+            Mail::to($details["email"])
+                  ->send(new MailTemplate($details ));
+
+            if (Mail::failures()) {
+                return response()->json([
+                    'mail_code' => 0,
+                    'code'=> 505,
+                    'status' => 'Sorry! Please try again latter'
+                ]);
+           }else{
+                return response()->json([
+                    'mail_code' => 1,
+                    'code'=> 200,
+                    'status' => 'Great! Successfully send in your mail'
+                ]);
+            }
+        }catch (Throwable $e) {
+            report($e);
+    
+            return false;
+        }   
+    }
 
 
 

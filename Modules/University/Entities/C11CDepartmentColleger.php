@@ -26,7 +26,7 @@ class C11CDepartmentColleger extends Model
 
 
     public function collegers(){
-        return $this->hasMany(
+        return $this->hasOne(
             C11MColleger::class, 'id', 'm_colleger_id'
         );
         // ->join('c11_m_departments', 'c11_m_departments.id', '=', 'c11_c_departments.m_department_id');

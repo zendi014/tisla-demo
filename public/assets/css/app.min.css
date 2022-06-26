@@ -5665,3 +5665,7 @@ body[data-layout-mode=dark] .pricing-tab-box .nav-link {
 body[data-layout-mode=dark] .pricing-tab-box .nav-link.active {
     border-color: #0a5c9a
 }
+
+.hide_content{
+    display:none
+}

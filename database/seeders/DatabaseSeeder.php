@@ -9,6 +9,7 @@ use App\Models\Role;
 use App\Models\User;
 
 use Hash;
+use DB;
 
 use App\Models\Modules\MInstitutionCategory;
 use App\Models\Modules\MInstitutionLevel;
@@ -18,7 +19,13 @@ use App\Models\Modules\AInstitution;
 
 use App\Models\Modules\MAuthRoute;
 
+use App\Helpers\Helper;
+
 use Carbon\Carbon;
+
+
+use Modules\University\Http\Controllers\C11DepartmentController;
+use Modules\University\Http\Controllers\C11FacultyContnroller;
 
 class DatabaseSeeder extends Seeder
 {
@@ -47,13 +54,48 @@ class DatabaseSeeder extends Seeder
             
         }
 
+        $faculty = array(
+            [
+                "fakultas_name" => "Faculty A",
+                "flag" => Helper::text_preg_flag("Faculty A")
+            ],
+            [
+                "fakultas_name" => "Faculty B",
+                "flag" => Helper::text_preg_flag("Faculty B")
+            ]
+        );
+
+        foreach($faculty as $val){
+            C11FacultyContnroller::_store_($val);
+        }
+
+        $last_faculty = DB::select("SELECT * FROM c11_m_faculties ORDER BY created_at DESC LIMIT 1;")[0]->id;
+
+
+        $department = array(
+            [
+                "name" => "Department A",
+                "flag" => Helper::text_preg_flag("Department A")
+            ],
+            [
+                "name" => "Department B",
+                "flag" => Helper::text_preg_flag("Department B")
+            ]
+        );
+
+        foreach($department as $val){
+            C11DepartmentController::_store_($val);
+        }
+
+        $last_department = DB::select("SELECT * FROM c11_m_departments ORDER BY created_at DESC LIMIT 1;")[0]->id;
+        // dd($last_faculty, $last_department);
+
         $this->command->info('Default Permissions added.');
 
         // Confirm roles needed
-        if ($this->command->confirm('Create Roles for user, default is admin and user? [y|N]', true)) {
-
-            // Ask for roles from input
-            $input_roles = 'Admin,User'; //$this->command->ask('Enter roles in comma separate format.', 'Admin,User');
+        $input_roles = 'Admin'; //$this->command->ask('Enter roles in comma separate format.', 'Admin,User'); ,Dosen,KBI,Prodi
+        
+        if ($this->command->confirm('Create Roles for '.$input_roles.' [y|N]', true)) {
 
             // Explode roles
             $roles_array = explode(',', $input_roles);
@@ -65,16 +107,22 @@ class DatabaseSeeder extends Seeder
                     // assign all permissions
                     $role->syncPermissions(Permission::all());
                     $this->command->info('Admin granted all the permissions');
-                } else {
-                    // for others by default only read access
-                    $role->syncPermissions(
-                        Permission::where('name', 'ILIKE', '%view%')
-                                   ->where('name', 'ILIKE', '%assesment%')->get()
-                    );
+                    
                 }
+                // elseif ($role->name == 'Dosen' || $role->name == 'KBI') {
+                //     $role->syncPermissions(
+                //         Permission::where('name', 'view_assesment')
+                //                    ->orWhere('name', 'add_assesment')->get()
+                //     );
+                // }else {
+                //     $role->syncPermissions(
+                //         Permission::where('name', 'add_assesment_statistic')
+                //                    ->orWhere('name', 'view_assesment_statistic')->get()
+                //     );
+                // }
 
                 // create one user for each role
-                $this->createUser($role);
+                $this->createUser($role, $last_faculty, $last_department);
             }
 
             $this->command->info('Roles ' . $input_roles . ' added successfully');
@@ -96,12 +144,12 @@ class DatabaseSeeder extends Seeder
      *
      * @param $role
      */
-    private function createUser($role)
+    private function createUser($role, $last_faculty, $last_department)
     {
         $user = User::factory()->create();
         $user->assignRole($role);
 
-        $this->create_inst($user->id);
+        $this->create_inst($user->id, $last_faculty, $last_department);
     
         if( $role->name == 'Admin' ) {
             $this->command->info('Here is your admin details to login:');
@@ -110,20 +158,22 @@ class DatabaseSeeder extends Seeder
         }
     }
 
-    private function create_inst($user_id){
+    private function create_inst($user_id, $last_faculty, $last_department){
         $inst = AInstitution::factory()->create([
             'created_by' => $user_id
         ]);
         $this->command->warn('AInstitution Done Seeded...');
 
-        $this->create_user_inst($inst->id, $user_id);
+        $this->create_user_inst($inst->id, $user_id, $last_faculty, $last_department);
     }
 
-    private function create_user_inst($inst_id, $user_id){
+    private function create_user_inst($inst_id, $user_id, $last_faculty, $last_department){
         $user_inst = array(
             'institution_id' => $inst_id,
             'user_id' => $user_id,
-            'assigned_by' => $user_id
+            'assigned_by' => $user_id,
+            'faculty_id' => $last_faculty,
+            'department_id' => $last_department
         );
         
         CUserInstitution::factory()->create($user_inst);

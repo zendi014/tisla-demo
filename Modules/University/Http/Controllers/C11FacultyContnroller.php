@@ -48,6 +48,22 @@ class C11FacultyContnroller extends Controller
     }
 
 
+    public static function _store_($data)
+    {
+        $flag = Helper::text_preg_flag($data["fakultas_name"]);
+        
+        $mfaculty = C11MFaculty::firstOrCreate(
+            [
+                "flag" => $flag
+            ],
+            [
+                "flag" => $flag,
+                "name" => strtoupper($data["fakultas_name"])
+            ]
+        );
+    }
+
+
     public function get_faculty_institution(Request $request){
         $qlimit = Helper::general_query_limit();
 

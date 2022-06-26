@@ -45,35 +45,68 @@ class UserRepository implements UserRepositoryInterface
 
             $users = $users->whereBetween(DB::raw('DATE(created_at)'), [$startDate, $endDate]);
         }
+        
 
-        if (!empty($options['filter']['q'])) {
+        // if (!empty($options['filter']['q'])) {
+        //     $users = $users->whereHas('c_user_institutions', fn ($query) =>
+        //                 $query->where('institution_id', '=', $institution_id)
+        //                     //   ->has('user_faculty')
+        //                     //   ->has('user_department')
+        //             )->orWhere('name', 'LIKE', "%{$options['filter']['q']}%")
+        //             ->orWhere('email', 'LIKE', "%{$options['filter']['q']}%")
+        //             ->limit($qlimit);
+        //     dd($users);
+            /*
+            $users = $users->whereHas('c_user_institutions', fn ($query) =>
+                        $query->where('institution_id', '=', $institution_id)
+                              ->whereHas('user_faculty', fn($q) => 
+                                    $q->where('c11_m_faculties.id', '=', 'c_user_institutions.faculty_id')
+                              )->whereHas('user_department', fn($q) => 
+                                    $q->where('c11_m_departments.id', '=', 'c_user_institutions.department_id')
+                              )
+                    )->orWhere('name', 'LIKE', "%{$options['filter']['q']}%")
+                    ->orWhere('email', 'LIKE', "%{$options['filter']['q']}%")
+                    ->limit($qlimit);
+
+
             $users = $users->whereHas('c_user_institutions', fn ($query) =>
                         $query->where('institution_id', '=', $institution_id)
                     )->orWhere('name', 'LIKE', "%{$options['filter']['q']}%")
                     ->orWhere('email', 'LIKE', "%{$options['filter']['q']}%")
                     ->limit($qlimit);
-        }
+             */
+        // }
 
-        if ($perPage) {
+        if($perPage) {
             return $users->whereHas('c_user_institutions', fn ($query) =>
                 $query->where('institution_id', '=', $institution_id)
+                    //   ->has('user_faculty')
+                    //   ->has('user_department')
             )->paginate($perPage);
         }
+
         
-        return $users->whereHas('c_user_institutions', fn ($query) =>
+        return $users->whereHas('c_user_institutions' , fn ($query) =>
             $query->where('institution_id', '=', $institution_id)
         )->limit($qlimit)->get();
+
+        // return $users->whereHas('c_user_institutions', fn ($query) =>
+        //     $query->where('institution_id', '=', $institution_id)
+        //         //   ->has('user_faculty')
+        //         //   ->has('user_department')
+        // )->limit($qlimit)->get();
     }
 
     public function findById($id)
     {
-        return User::findOrFail($id);
+        return User::with('c_user_institutions')->findOrFail($id);
     }
 
 
     public function create($params = [])
     {
         // dd(session()->get('user_data'));
+        // dd($params['faculty_id']);
 
         //check_user_name
         $user_email = $params['user_name'] . '@'. session()->get('user_data')['inst_domain'];
@@ -102,9 +135,9 @@ class UserRepository implements UserRepositoryInterface
                 $user_data['role_id'] = $params['role_id'];
             }
 
-            // dd($user_data);
+            // dd($params);
 
-            return DB::transaction(function () use ($user_data) {
+            return DB::transaction(function () use ($user_data, $params) {
                 $user = User::create($user_data);
                 $this->syncRolesAndPermissions($user_data, $user);
 
@@ -112,16 +145,17 @@ class UserRepository implements UserRepositoryInterface
                 $uid = User::where("email", $user_data['email'])
                             ->where("user_code", $user_data['user_code'])
                             ->first();
-
+                // dd($user);
                 if($user){
                     $user_institution = array(
                         'user_id' => $uid->id,
                         'institution_id' => session()->get('user_data')['inst_id'],
-                        'assigned_by' => session()->get('user_data')['user_id']
+                        'assigned_by' => session()->get('user_data')['user_id'],
+                        "faculty_id" => $params['faculty_id'],
+                        "department_id" => $params['department_id'],
                     );
 
                     $res_user_institution = UserInstitutionController::create($user_institution);
-
                     return $user;
                 }
             });
@@ -141,6 +175,9 @@ class UserRepository implements UserRepositoryInterface
         if (!$params['password']) {
             unset($params['password']);
         }
+        
+        $params['password'] = Hash::make($params['password']);
+        $params['remember_token'] = Hash::make($params['password'].'|'.Str::random(10));
 
         return DB::transaction(function () use ($params, $user) {
             $user->update($params);
@@ -186,4 +223,5 @@ class UserRepository implements UserRepositoryInterface
 
         return $user;
     }
+    
 }

@@ -20,13 +20,77 @@
 
                 @can('view_recap_assesment')
                 <li>
-                    <a href="{{ url('/c11/recap_assesment') }}">
-                        <i class="fas fa-chart-bar"></i>
-                        <span data-key="t-dashboard">@lang('translation.RecapAssesment')</span>
+                    <a href="javascript: void(0);" class="has-arrow">
+                        <i data-feather="bar-chart"></i>
+                        <span data-key="t-apps">@lang('translation.RecapAssesment')</span>
                     </a>
+
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li>
+                            <a href="#" disabled>
+                                <span data-key="t-roles">@lang('translation.RecapAssesmentLectures')</span>
+                                <span class="badge rounded-pill bg-soft-danger text-danger float-end">soon</span>
+                            </a>
+                            <!-- url('/c11/recap_assesment_lectures') -->
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span data-key="t-roles">@lang('translation.RecapAssesmentLecturers')</span>
+                                <span class="badge rounded-pill bg-soft-danger text-danger float-end">soon</span>
+                            </a>
+                            <!-- url('/c11/recap_assesment_lecturers')  -->
+                        </li>
+                        <li>
+                            <a href="{{ url('/c11/recap_assesment_collegers') }}">
+                                <span data-key="t-roles">@lang('translation.RecapAssesmentCollegers')</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 @endcan
-            
+
+
+                @can('view_sync')
+                <li>       
+                    <a href="javascript: void(0);" class="has-arrow">
+                        <i data-feather="codesandbox"></i>
+                        <span data-key="t-apps">@lang('translation.Sync')</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li>
+                            <a href="{{ url('/c11/sync_colleger') }}">  
+                                <span data-key="t-roles">@lang('translation.SyncColleger')</span>
+                            </a>
+                            <!--  -->
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span data-key="t-roles">@lang('translation.SyncLecturer')</span>
+                                <span class="badge rounded-pill bg-soft-danger text-danger float-end">soon</span>
+                            </a>
+                            <!-- url('/c11/sync_lecturer') -->
+                        </li>
+                        <!-- <li>
+                            <a href="{{ url('/c11/sync_faculty') }}">
+                                <span data-key="t-roles">@lang('translation.SyncFaculty')</span>
+                            </a>
+                        </li> -->
+                        <li>
+                            <a href="#">
+                                <span data-key="t-roles">@lang('translation.SyncDepartment')</span>
+                                <span class="badge rounded-pill bg-soft-danger text-danger float-end">soon</span>
+                            </a>
+                            <!-- url('/c11/sync_department') -->
+                        </li>
+                        <li>
+                            <a href="{{ url('/c11/sync_curriculum') }}">
+                                <span data-key="t-roles">@lang('translation.SyncCurriculum')</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                @endcan
+
 
                 @can('view_users')
                 <li>
@@ -54,6 +118,8 @@
                     </ul>
                 </li>
                 @endcan
+
+                
 
             </ul>
 

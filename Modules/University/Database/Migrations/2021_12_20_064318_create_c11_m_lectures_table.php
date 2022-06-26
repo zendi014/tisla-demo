@@ -19,7 +19,8 @@ class CreateC11MLecturesTable extends Migration
             $table->string('name');
             $table->string('code');
             $table->string('level_marks')->nullable();
-            $table->string('semester')->nullable();
+            $table->string('semester_mk')->nullable();
+            $table->string('tahun_ajaran')->nullable();
             $table->string('flag');
             $table->uuid('created_by');
 

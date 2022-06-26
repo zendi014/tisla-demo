@@ -14,6 +14,8 @@ use App\Models\Concerns\UuidTrait;
 
 use App\Models\Modules\CUserInstitution;
 
+
+
 class User extends Authenticatable
 {
     use HasFactory, Notifiable, UuidTrait, HasRoles;
@@ -42,6 +44,8 @@ class User extends Authenticatable
     ];
 
     protected $visible = ['id', 'user_code', 'name', 'avatar'];
+
+    // protected $primaryKey = 'user_id';
 
     /**
      * The attributes that should be cast to native types.
@@ -85,7 +89,8 @@ class User extends Authenticatable
     }
 
     public function c_user_institutions(){
-        return $this->belongsTo(CUserInstitution::class, 'id', 'user_id')->select(['institution_id', 'user_id', 'assigned_by']);
+        return $this->belongsTo(CUserInstitution::class, 'id', 'user_id')
+                     ->select(['institution_id', 'user_id', 'assigned_by', 'faculty_id', 'department_id']);
     }
 
     public function scopeWithWhereHas($query, $relation, $constraint){

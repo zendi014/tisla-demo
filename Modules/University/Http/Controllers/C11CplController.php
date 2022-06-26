@@ -9,6 +9,7 @@ use Illuminate\Routing\Controller;
 use App\Helpers\Helper;
 use Modules\University\Entities\C11MCpl;
 use Modules\University\Entities\C11CCpl;
+use Modules\University\Entities\C11CCompetency;
 use App\Models\Modules\CUserInstitution;
 
 class C11CplController extends Controller
@@ -47,6 +48,22 @@ class C11CplController extends Controller
 
             if($mcpl){
                 $user_inst = CUserInstitution::where("id", $user_inst_id)->first();
+
+                if(isset($data['competencies'])){
+                    foreach ($data['competencies'] as $value) {
+                        if(is_null($value)==false){
+                            C11CCompetency::firstOrCreate([
+                                'flag' => Helper::text_preg_flag($mcpl->id)."-".Helper::text_preg_flag($value)
+                            ],[
+                                'flag' => Helper::text_preg_flag($mcpl->id)."-".Helper::text_preg_flag($value),
+                                'm_cpl_id' => $mcpl->id, 
+                                'competency' => $value, 
+                                'created_by' => $user_inst_id
+                            ]);
+                        }
+                    }
+                }
+                
 
                 $ccpl = C11CCpl::firstOrCreate([
                             "m_cpl_id"=> $mcpl->id,
